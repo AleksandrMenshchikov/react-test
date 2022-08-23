@@ -7,4 +7,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 62.5%;
+}
+
+:root {
+  --background-color: #e6e6e5;
+  --font-color-black: #1a2027;
 }
