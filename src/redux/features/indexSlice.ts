@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '../store';
+import { AppThunk, RootState } from '../store';
 
 export interface IndexState {
   name: string;
@@ -92,7 +92,6 @@ export const {
   setEmail,
   setPassword,
   setDateOfBirth,
-  setGender,
   setImage,
   setIsNameError,
   setIsEmailError,
@@ -102,8 +101,21 @@ export const {
   setIsImageError,
   setTypeInputPassword,
   setIsShowErrors,
+  setGender,
 } = indexSlice.actions;
 
 export const selectIndex = (state: RootState) => state.index;
+
+export const postGender =
+  (gender: string): AppThunk =>
+  (dispatch, getState) => {
+    dispatch(setGender(gender));
+    const currentValue = selectIndex(getState());
+    if (currentValue.isShowErrors) {
+      currentValue.gender
+        ? dispatch(setIsGenderError(false))
+        : dispatch(setIsGenderError(true));
+    }
+  };
 
 export default indexSlice.reducer;

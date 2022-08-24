@@ -11,6 +11,9 @@ import ruLocale from 'date-fns/locale/ru';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import {
@@ -23,10 +26,11 @@ import {
   setIsPasswordError,
   setIsDateOfBirthError,
   setIsShowErrors,
-  setGender,
   setImage,
   selectIndex,
   setTypeInputPassword,
+  setIsGenderError,
+  postGender,
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
@@ -52,6 +56,7 @@ function Index() {
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
   const refDateOfBirth = useRef<HTMLInputElement>(null);
+  const refGender = useRef<HTMLInputElement>(null);
 
   function handleFormSubmit(evt: { preventDefault: () => void }) {
     evt.preventDefault();
@@ -68,6 +73,9 @@ function Index() {
     refDateOfBirth.current?.checkValidity()
       ? dispatch(setIsDateOfBirthError(false))
       : dispatch(setIsDateOfBirthError(true));
+    gender
+      ? dispatch(setIsGenderError(false))
+      : dispatch(setIsGenderError(true));
   }
 
   function handleNameChange(evt: {
@@ -117,6 +125,10 @@ function Index() {
 
   function handleDateOfBirthChange(value: string | object | null | Date) {
     dispatch(setDateOfBirth(value));
+  }
+
+  function handleGenderChange(evt: { target: { value: string } }) {
+    dispatch(postGender(evt.target.value));
   }
 
   return (
@@ -249,7 +261,13 @@ function Index() {
                     },
                     error: isDateOfBirthError ? true : false,
                   };
-                  return <TextField variant="outlined" {...newParams} />;
+                  return (
+                    <TextField
+                      variant="outlined"
+                      {...newParams}
+                      autoComplete="off"
+                    />
+                  );
                 }}
               />
             </LocalizationProvider>
@@ -263,7 +281,33 @@ function Index() {
               Заполните поле (дд.мм.гггг)
             </FormHelperText>
           </FormControl>
-
+          <FormControl fullWidth>
+            <InputLabel error={isGenderError} id="gender">
+              Пол *
+            </InputLabel>
+            <Select
+              required
+              ref={refGender}
+              error={isGenderError}
+              labelId="gender"
+              id="gender"
+              value={gender}
+              label="Пол"
+              onChange={handleGenderChange}
+            >
+              <MenuItem value={'male'}>Мужской</MenuItem>
+              <MenuItem value={'female'}>Женский</MenuItem>
+            </Select>
+            <FormHelperText
+              error
+              className={`${styles.errorInput} ${
+                isGenderError && styles.errorInput_active
+              }`}
+              sx={{ marginBottom: '10px' }}
+            >
+              Выберите пол
+            </FormHelperText>
+          </FormControl>
           <Button variant="contained" type="submit" className={styles.button}>
             Зарегистрироваться
           </Button>
