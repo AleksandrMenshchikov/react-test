@@ -8,7 +8,7 @@ export interface IndexState {
   isEmailError: boolean;
   password: string;
   isPasswordError: boolean;
-  dateOfBirth: string | object | null | Date;
+  dateOfBirth: number | null | Date;
   isDateOfBirthError: boolean;
   gender: string;
   isGenderError: boolean;
@@ -57,7 +57,7 @@ export const indexSlice = createSlice({
     setIsPasswordError: (state, action: PayloadAction<boolean>) => {
       state.isPasswordError = action.payload;
     },
-    setDateOfBirth: (state, action: PayloadAction<string | object | null>) => {
+    setDateOfBirth: (state, action: PayloadAction<number | null | Date>) => {
       state.dateOfBirth = action.payload;
     },
     setIsDateOfBirthError: (state, action: PayloadAction<boolean>) => {

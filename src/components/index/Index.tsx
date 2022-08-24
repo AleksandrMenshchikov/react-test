@@ -70,9 +70,9 @@ function Index() {
     refPassword.current?.checkValidity()
       ? dispatch(setIsPasswordError(false))
       : dispatch(setIsPasswordError(true));
-    refDateOfBirth.current?.checkValidity()
-      ? dispatch(setIsDateOfBirthError(false))
-      : dispatch(setIsDateOfBirthError(true));
+    isDateOfBirthError || !dateOfBirth
+      ? dispatch(setIsDateOfBirthError(true))
+      : dispatch(setIsDateOfBirthError(false));
     gender
       ? dispatch(setIsGenderError(false))
       : dispatch(setIsGenderError(true));
@@ -123,8 +123,23 @@ function Index() {
     evt.preventDefault();
   }
 
-  function handleDateOfBirthChange(value: string | object | null | Date) {
-    dispatch(setDateOfBirth(value));
+  function handleDateOfBirthChange(value: number | null | Date) {
+    if (value) {
+      const timestamp = new Date(value).getTime();
+      if (timestamp !== null && timestamp > -1577934000000) {
+        dispatch(setDateOfBirth(timestamp));
+        dispatch(setIsDateOfBirthError(false));
+      } else {
+        if (isShowErrors) {
+          dispatch(setIsDateOfBirthError(true));
+        }
+      }
+    } else {
+      dispatch(setDateOfBirth(null));
+      if (isShowErrors) {
+        dispatch(setIsDateOfBirthError(true));
+      }
+    }
   }
 
   function handleGenderChange(evt: { target: { value: string } }) {
@@ -243,16 +258,6 @@ function Index() {
                 onChange={handleDateOfBirthChange}
                 minDate={new Date('01-01-1920')}
                 renderInput={(params) => {
-                  if (
-                    (!params.inputProps?.value || params.error) &&
-                    isShowErrors
-                  ) {
-                    dispatch(setIsDateOfBirthError(true));
-                  } else if (!params.inputProps?.value && isShowErrors) {
-                    dispatch(setIsDateOfBirthError(true));
-                  } else {
-                    dispatch(setIsDateOfBirthError(false));
-                  }
                   const newParams = {
                     ...params,
                     inputProps: {
