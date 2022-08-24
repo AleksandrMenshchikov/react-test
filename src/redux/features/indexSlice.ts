@@ -12,10 +12,10 @@ export interface IndexState {
   isDateOfBirthError: boolean;
   gender: string;
   isGenderError: boolean;
-  image: string;
-  isImageError: boolean;
   typeInputPassword: 'text' | 'password';
   isShowErrors: boolean;
+  isFileError: boolean;
+  isFileInput: boolean;
 }
 
 const initialState: IndexState = {
@@ -29,10 +29,10 @@ const initialState: IndexState = {
   isDateOfBirthError: false,
   gender: '',
   isGenderError: false,
-  image: '',
-  isImageError: false,
   typeInputPassword: 'password',
   isShowErrors: false,
+  isFileError: false,
+  isFileInput: false,
 };
 
 export const indexSlice = createSlice({
@@ -69,12 +69,6 @@ export const indexSlice = createSlice({
     setIsGenderError: (state, action: PayloadAction<boolean>) => {
       state.isGenderError = action.payload;
     },
-    setImage: (state, action: PayloadAction<string>) => {
-      state.image = action.payload;
-    },
-    setIsImageError: (state, action: PayloadAction<boolean>) => {
-      state.isImageError = action.payload;
-    },
     setTypeInputPassword: (
       state,
       action: PayloadAction<'text' | 'password'>
@@ -84,6 +78,12 @@ export const indexSlice = createSlice({
     setIsShowErrors: (state, action: PayloadAction<boolean>) => {
       state.isShowErrors = action.payload;
     },
+    setIsFileError: (state, action: PayloadAction<boolean>) => {
+      state.isFileError = action.payload;
+    },
+    setIsFileInput: (state, action: PayloadAction<boolean>) => {
+      state.isFileInput = action.payload;
+    },
   },
 });
 
@@ -92,16 +92,16 @@ export const {
   setEmail,
   setPassword,
   setDateOfBirth,
-  setImage,
   setIsNameError,
   setIsEmailError,
   setIsPasswordError,
   setIsDateOfBirthError,
   setIsGenderError,
-  setIsImageError,
   setTypeInputPassword,
   setIsShowErrors,
   setGender,
+  setIsFileError,
+  setIsFileInput,
 } = indexSlice.actions;
 
 export const selectIndex = (state: RootState) => state.index;

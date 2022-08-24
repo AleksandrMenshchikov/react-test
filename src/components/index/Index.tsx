@@ -16,6 +16,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
+import { useEffect } from 'react';
 import {
   setName,
   setEmail,
@@ -26,13 +27,16 @@ import {
   setIsPasswordError,
   setIsDateOfBirthError,
   setIsShowErrors,
-  setImage,
   selectIndex,
   setTypeInputPassword,
   setIsGenderError,
   postGender,
+  setIsFileError,
+  setIsFileInput,
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
+import emptyAvatar from '../../images/Empty-Avatar-Rund.png';
+import upload from '../../images/upload.png';
 
 function Index() {
   const {
@@ -46,19 +50,33 @@ function Index() {
     isDateOfBirthError,
     gender,
     isGenderError,
-    image,
-    isImageError,
     typeInputPassword,
     isShowErrors,
+    isFileError,
+    isFileInput,
   } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
   const refName = useRef<HTMLInputElement>(null);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
-  const refDateOfBirth = useRef<HTMLInputElement>(null);
+  const refInputFile = useRef<HTMLInputElement>(null);
   const refGender = useRef<HTMLInputElement>(null);
+  const refAvatar = useRef<HTMLImageElement>(null);
 
-  function handleFormSubmit(evt: { preventDefault: () => void }) {
+  useEffect(() => {
+    if (isShowErrors) {
+      if (isFileInput) {
+        dispatch(setIsFileError(false));
+      } else {
+        dispatch(setIsFileError(true));
+      }
+    }
+  }, [isShowErrors, isFileInput, dispatch]);
+
+  function handleFormSubmit(evt: {
+    preventDefault: () => void;
+    currentTarget: HTMLFormElement | undefined;
+  }) {
     evt.preventDefault();
     dispatch(setIsShowErrors(true));
     refName.current?.checkValidity()
@@ -76,6 +94,11 @@ function Index() {
     gender
       ? dispatch(setIsGenderError(false))
       : dispatch(setIsGenderError(true));
+    if (isFileInput) {
+      dispatch(setIsFileError(false));
+    } else {
+      dispatch(setIsFileError(true));
+    }
   }
 
   function handleNameChange(evt: {
@@ -144,6 +167,17 @@ function Index() {
 
   function handleGenderChange(evt: { target: { value: string } }) {
     dispatch(postGender(evt.target.value));
+  }
+
+  function handleInputFileChange(evt: { currentTarget: { files: any } }) {
+    if (evt.currentTarget.files[0]) {
+      dispatch(setIsFileInput(true));
+      dispatch(setIsFileError(false));
+      const url = window.URL.createObjectURL(evt.currentTarget.files[0]);
+      if (refAvatar.current) {
+        refAvatar.current.src = url;
+      }
+    }
   }
 
   return (
@@ -313,6 +347,34 @@ function Index() {
               Выберите пол
             </FormHelperText>
           </FormControl>
+          <label htmlFor="file" className={styles.labelAvatar}>
+            <input
+              ref={refInputFile}
+              name="file"
+              id="file"
+              type="file"
+              accept="image/*"
+              className={styles.inputFile}
+              onChange={handleInputFileChange}
+              required
+            />
+            <img
+              ref={refAvatar}
+              src={emptyAvatar}
+              alt="Фото пользователя"
+              className={styles.avatar}
+            />
+            <img alt="Upload" src={upload} className={styles.editIcon} />
+            <FormHelperText
+              error
+              className={`${styles.errorInput} ${
+                isFileError && styles.errorInput_active
+              }`}
+              sx={{ marginBottom: '10px', textAlign: 'center' }}
+            >
+              Загрузите фото
+            </FormHelperText>
+          </label>
           <Button variant="contained" type="submit" className={styles.button}>
             Зарегистрироваться
           </Button>
