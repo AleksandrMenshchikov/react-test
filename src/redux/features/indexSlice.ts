@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RootState, AppThunk } from '../store';
 
 export interface IndexState {
   name: string;
@@ -8,13 +8,14 @@ export interface IndexState {
   isEmailError: boolean;
   password: string;
   isPasswordError: boolean;
-  dateOfBirth: string;
+  dateOfBirth: string | object | null | Date;
   isDateOfBirthError: boolean;
   gender: string;
   isGenderError: boolean;
   image: string;
   isImageError: boolean;
-  isFormValidity: boolean;
+  typeInputPassword: 'text' | 'password';
+  isShowErrors: boolean;
 }
 
 const initialState: IndexState = {
@@ -24,13 +25,14 @@ const initialState: IndexState = {
   isEmailError: false,
   password: '',
   isPasswordError: false,
-  dateOfBirth: '',
+  dateOfBirth: null,
   isDateOfBirthError: false,
   gender: '',
   isGenderError: false,
   image: '',
   isImageError: false,
-  isFormValidity: true,
+  typeInputPassword: 'password',
+  isShowErrors: false,
 };
 
 export const indexSlice = createSlice({
@@ -55,7 +57,7 @@ export const indexSlice = createSlice({
     setIsPasswordError: (state, action: PayloadAction<boolean>) => {
       state.isPasswordError = action.payload;
     },
-    setDateOfBirth: (state, action: PayloadAction<string>) => {
+    setDateOfBirth: (state, action: PayloadAction<string | object | null>) => {
       state.dateOfBirth = action.payload;
     },
     setIsDateOfBirthError: (state, action: PayloadAction<boolean>) => {
@@ -73,8 +75,14 @@ export const indexSlice = createSlice({
     setIsImageError: (state, action: PayloadAction<boolean>) => {
       state.isImageError = action.payload;
     },
-    setIsFormValidity: (state, action: PayloadAction<boolean>) => {
-      state.isFormValidity = action.payload;
+    setTypeInputPassword: (
+      state,
+      action: PayloadAction<'text' | 'password'>
+    ) => {
+      state.typeInputPassword = action.payload;
+    },
+    setIsShowErrors: (state, action: PayloadAction<boolean>) => {
+      state.isShowErrors = action.payload;
     },
   },
 });
@@ -92,7 +100,8 @@ export const {
   setIsDateOfBirthError,
   setIsGenderError,
   setIsImageError,
-  setIsFormValidity,
+  setTypeInputPassword,
+  setIsShowErrors,
 } = indexSlice.actions;
 
 export const selectIndex = (state: RootState) => state.index;
