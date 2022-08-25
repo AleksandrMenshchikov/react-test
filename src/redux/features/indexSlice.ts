@@ -1,7 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { api } from '../../utils/api';
 import { AppThunk, RootState } from '../store';
 
 export interface IndexState {
+  data: object | null;
+  status: 'idle' | 'loading' | 'failed';
   name: string;
   isNameError: boolean;
   email: string;
@@ -19,6 +22,8 @@ export interface IndexState {
 }
 
 const initialState: IndexState = {
+  data: null,
+  status: 'idle',
   name: '',
   isNameError: false,
   email: '',
@@ -34,6 +39,28 @@ const initialState: IndexState = {
   isFileError: false,
   avatar: '',
 };
+
+export const createUser = createAsyncThunk(
+  'index/postUser',
+  async (data: {
+    name: string;
+    email: string;
+    password: string;
+    dateOfBirth: number | null | Date;
+    gender: string;
+    avatar: string;
+  }) => {
+    const response = await api.postSignup(data);
+    await new Promise((resolve, reject) => {
+      let timer = setTimeout(() => {
+        resolve('result');
+        clearTimeout(timer);
+      }, 5000);
+    });
+    const result = await response.json();
+    return result;
+  }
+);
 
 export const indexSlice = createSlice({
   name: 'index',
@@ -84,6 +111,19 @@ export const indexSlice = createSlice({
     setAvatar: (state, action: PayloadAction<string>) => {
       state.avatar = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.data = action.payload;
+      })
+      .addCase(createUser.rejected, (state) => {
+        state.status = 'failed';
+      });
   },
 });
 
@@ -161,6 +201,12 @@ export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
     !isPasswordError
   ) {
     dispatch(setIsShowErrors(false));
+    const { name, email, password, dateOfBirth, gender, avatar } = selectIndex(
+      getState()
+    );
+    dispatch(
+      createUser({ name, email, password, dateOfBirth, gender, avatar })
+    );
   }
 };
 

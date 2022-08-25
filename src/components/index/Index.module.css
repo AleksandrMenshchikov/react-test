@@ -36,6 +36,11 @@
   width: fit-content;
 }
 
+.buttonLoading {
+  height: 36.5px;
+  width: 199px;
+}
+
 @media screen and (max-width: 500px) {
   .innerWrapper {
     padding: 25px 15px 25px;

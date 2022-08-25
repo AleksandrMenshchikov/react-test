@@ -12,7 +12,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputEmail = () => {
-  const { email, isEmailError, isShowErrors } = useSelector(selectIndex);
+  const { email, isEmailError, isShowErrors, status } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
   function handleEmailChange(evt: {
@@ -29,6 +29,7 @@ const InputEmail = () => {
   return (
     <FormControl fullWidth>
       <TextField
+        disabled={status === 'loading'}
         variant="outlined"
         error={isEmailError}
         type="email"

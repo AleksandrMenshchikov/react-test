@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputPassword = () => {
-  const { password, isPasswordError, typeInputPassword, isShowErrors } =
+  const { password, isPasswordError, typeInputPassword, isShowErrors, status } =
     useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
@@ -47,6 +47,7 @@ const InputPassword = () => {
   return (
     <FormControl fullWidth>
       <TextField
+        disabled={status === 'loading'}
         variant="outlined"
         error={isPasswordError}
         type={typeInputPassword}

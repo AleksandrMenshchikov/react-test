@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
-  const { isFileError } = useSelector(selectIndex);
+  const { isFileError, status } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
   const refInputFile = useRef<HTMLInputElement>(null);
   const refAvatar = useRef<HTMLImageElement>(null);
@@ -30,24 +30,27 @@ const InputAvatar = () => {
   }
 
   return (
-    <label htmlFor="file" className={styles.labelAvatar}>
-      <input
-        ref={refInputFile}
-        name="file"
-        id="file"
-        type="file"
-        accept="image/*"
-        className={styles.inputFile}
-        onChange={handleInputFileChange}
-        required
-      />
-      <img
-        ref={refAvatar}
-        src={emptyAvatar}
-        alt="Фото пользователя"
-        className={styles.avatar}
-      />
-      <img alt="Upload" src={upload} className={styles.editIcon} />
+    <>
+      <label htmlFor="file" className={styles.labelAvatar}>
+        <input
+          disabled={status === 'loading'}
+          ref={refInputFile}
+          name="file"
+          id="file"
+          type="file"
+          accept="image/*"
+          className={styles.inputFile}
+          onChange={handleInputFileChange}
+          required
+        />
+        <img
+          ref={refAvatar}
+          src={emptyAvatar}
+          alt="Фото пользователя"
+          className={styles.avatar}
+        />
+        <img alt="Upload" src={upload} className={styles.editIcon} />
+      </label>
       <FormHelperText
         error
         className={`${styles.errorInput} ${
@@ -57,7 +60,7 @@ const InputAvatar = () => {
       >
         Загрузите фото
       </FormHelperText>
-    </label>
+    </>
   );
 };
 

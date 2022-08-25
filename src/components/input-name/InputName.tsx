@@ -12,7 +12,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputName = () => {
-  const { name, isNameError, isShowErrors } = useSelector(selectIndex);
+  const { name, isNameError, isShowErrors, status } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
   function handleNameChange(evt: {
@@ -29,6 +29,7 @@ const InputName = () => {
   return (
     <FormControl fullWidth>
       <TextField
+        disabled={status === 'loading'}
         variant="outlined"
         error={isNameError}
         type="text"

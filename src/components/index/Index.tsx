@@ -1,5 +1,6 @@
 import styles from './Index.module.css';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import {
@@ -16,7 +17,7 @@ import InputGender from '../input-gender/InputGender';
 import InputAvatar from '../input-avatar/InputAvatar';
 
 function Index() {
-  const { isShowErrors, avatar } = useSelector(selectIndex);
+  const { isShowErrors, avatar, status, data } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -26,8 +27,6 @@ function Index() {
       } else {
         dispatch(setIsFileError(true));
       }
-    } else {
-      console.log('submit');
     }
   }, [isShowErrors, avatar, dispatch]);
 
@@ -50,9 +49,17 @@ function Index() {
           <InputDateOfBirth />
           <InputGender />
           <InputAvatar />
-          <Button variant="contained" type="submit" className={styles.button}>
-            Зарегистрироваться
-          </Button>
+          {status === 'loading' ? (
+            <LoadingButton
+              loading
+              variant="outlined"
+              className={styles.buttonLoading}
+            />
+          ) : (
+            <Button variant="contained" type="submit" className={styles.button}>
+              Зарегистрироваться
+            </Button>
+          )}
         </form>
       </div>
     </div>

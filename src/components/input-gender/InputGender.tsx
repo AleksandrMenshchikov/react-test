@@ -10,7 +10,7 @@ import { selectIndex, postGender } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputGender = () => {
-  const { gender, isGenderError } = useSelector(selectIndex);
+  const { gender, isGenderError, status } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
   function handleGenderChange(evt: { target: { value: string } }) {
@@ -23,6 +23,7 @@ const InputGender = () => {
         Пол *
       </InputLabel>
       <Select
+        disabled={status === 'loading'}
         required
         error={isGenderError}
         labelId="gender"

@@ -16,7 +16,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
 
 const InputDateOfBirth = () => {
-  const { dateOfBirth, isDateOfBirthError, isShowErrors } =
+  const { dateOfBirth, isDateOfBirthError, isShowErrors, status } =
     useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
@@ -46,6 +46,7 @@ const InputDateOfBirth = () => {
         adapterLocale={ruLocale}
       >
         <DatePicker
+          disabled={status === 'loading'}
           label="Дата рождения *"
           value={dateOfBirth}
           onChange={handleDateOfBirthChange}
