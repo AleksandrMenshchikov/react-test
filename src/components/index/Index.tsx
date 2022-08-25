@@ -1,67 +1,34 @@
 import styles from './Index.module.css';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import ruLocale from 'date-fns/locale/ru';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import {
-  setName,
-  setEmail,
-  setPassword,
-  setDateOfBirth,
   setIsNameError,
   setIsEmailError,
   setIsPasswordError,
   setIsDateOfBirthError,
   setIsShowErrors,
   selectIndex,
-  setTypeInputPassword,
   setIsGenderError,
-  postGender,
   setIsFileError,
-  setIsFileInput,
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import emptyAvatar from '../../images/Empty-Avatar-Rund.png';
-import upload from '../../images/upload.png';
+import InputName from '../input-name/InputName';
+import InputEmail from '../input-email/InputEmail';
+import InputPassword from '../input-password/InputPassword';
+import InputDateOfBirth from '../input-date-of-birth/InputDateOfBirth';
+import InputGender from '../input-gender/InputGender';
+import InputAvatar from '../input-avatar/InputAvatar';
 
 function Index() {
-  const {
-    name,
-    isNameError,
-    email,
-    isEmailError,
-    password,
-    isPasswordError,
-    dateOfBirth,
-    isDateOfBirthError,
-    gender,
-    isGenderError,
-    typeInputPassword,
-    isShowErrors,
-    isFileError,
-    isFileInput,
-  } = useSelector(selectIndex);
+  const { dateOfBirth, isDateOfBirthError, gender, isShowErrors, isFileInput } =
+    useSelector(selectIndex);
   const dispatch = useAppDispatch();
   const refName = useRef<HTMLInputElement>(null);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
-  const refInputFile = useRef<HTMLInputElement>(null);
   const refGender = useRef<HTMLInputElement>(null);
-  const refAvatar = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (isShowErrors) {
@@ -75,7 +42,7 @@ function Index() {
 
   function handleFormSubmit(evt: {
     preventDefault: () => void;
-    currentTarget: HTMLFormElement | undefined;
+    currentTarget: HTMLFormElement;
   }) {
     evt.preventDefault();
     dispatch(setIsShowErrors(true));
@@ -101,280 +68,17 @@ function Index() {
     }
   }
 
-  function handleNameChange(evt: {
-    currentTarget: { value: string; checkValidity: () => boolean };
-  }) {
-    dispatch(setName(evt.currentTarget.value.trimStart()));
-    if (isShowErrors) {
-      evt.currentTarget.checkValidity()
-        ? dispatch(setIsNameError(false))
-        : dispatch(setIsNameError(true));
-    }
-  }
-
-  function handleEmailChange(evt: {
-    currentTarget: { value: string; checkValidity: () => boolean };
-  }) {
-    dispatch(setEmail(evt.currentTarget.value.trimStart()));
-    if (isShowErrors) {
-      evt.currentTarget.checkValidity()
-        ? dispatch(setIsEmailError(false))
-        : dispatch(setIsEmailError(true));
-    }
-  }
-
-  function handlePasswordChange(evt: {
-    currentTarget: { value: string; checkValidity: () => boolean };
-  }) {
-    dispatch(setPassword(evt.currentTarget.value.trimStart()));
-    if (isShowErrors) {
-      evt.currentTarget.checkValidity()
-        ? dispatch(setIsPasswordError(false))
-        : dispatch(setIsPasswordError(true));
-    }
-  }
-
-  function handleShowPasswordClick() {
-    if (typeInputPassword === 'text') {
-      dispatch(setTypeInputPassword('password'));
-    } else {
-      dispatch(setTypeInputPassword('text'));
-    }
-  }
-
-  function handlePasswordMouseDown(evt: { preventDefault: () => void }) {
-    evt.preventDefault();
-  }
-
-  function handleDateOfBirthChange(value: number | null | Date) {
-    if (value) {
-      const timestamp = new Date(value).getTime();
-      if (timestamp !== null && timestamp > -1577934000000) {
-        dispatch(setDateOfBirth(timestamp));
-        dispatch(setIsDateOfBirthError(false));
-      } else {
-        if (isShowErrors) {
-          dispatch(setIsDateOfBirthError(true));
-        }
-      }
-    } else {
-      dispatch(setDateOfBirth(null));
-      if (isShowErrors) {
-        dispatch(setIsDateOfBirthError(true));
-      }
-    }
-  }
-
-  function handleGenderChange(evt: { target: { value: string } }) {
-    dispatch(postGender(evt.target.value));
-  }
-
-  function handleInputFileChange(evt: { currentTarget: { files: any } }) {
-    if (evt.currentTarget.files[0]) {
-      dispatch(setIsFileInput(true));
-      dispatch(setIsFileError(false));
-      const url = window.URL.createObjectURL(evt.currentTarget.files[0]);
-      if (refAvatar.current) {
-        refAvatar.current.src = url;
-      }
-    }
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.innerWrapper}>
         <h2 className={styles.title}>Регистрация</h2>
         <form className={styles.form} onSubmit={handleFormSubmit} noValidate>
-          <FormControl fullWidth>
-            <TextField
-              variant="outlined"
-              inputRef={refName}
-              error={isNameError}
-              type="text"
-              id="name"
-              value={name}
-              onChange={handleNameChange}
-              label="Имя"
-              autoFocus
-              required
-              inputProps={{ minLength: 2, maxLength: 100 }}
-              autoComplete="name"
-              placeholder="Имя"
-            />
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isNameError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px' }}
-            >
-              Заполните поле
-            </FormHelperText>
-          </FormControl>
-          <FormControl fullWidth>
-            <TextField
-              variant="outlined"
-              inputRef={refEmail}
-              error={isEmailError}
-              type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
-              label="Email"
-              required
-              placeholder="name@example.com"
-              autoComplete="email"
-            />
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isEmailError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px' }}
-            >
-              Заполните поле
-            </FormHelperText>
-          </FormControl>
-          <FormControl fullWidth>
-            <TextField
-              variant="outlined"
-              inputRef={refPassword}
-              error={isPasswordError}
-              type={typeInputPassword}
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              label="Пароль"
-              required
-              placeholder="минимум 6 символов"
-              inputProps={{
-                minLength: 6,
-                maxLength: 100,
-              }}
-              autoComplete="current-password"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleShowPasswordClick}
-                      onMouseDown={handlePasswordMouseDown}
-                      edge="end"
-                    >
-                      {typeInputPassword === 'password' ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isPasswordError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px' }}
-            >
-              Заполните поле (минимум 6 символов)
-            </FormHelperText>
-          </FormControl>
-          <FormControl fullWidth>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={ruLocale}
-            >
-              <DatePicker
-                label="Дата рождения *"
-                value={dateOfBirth}
-                onChange={handleDateOfBirthChange}
-                minDate={new Date('01-01-1920')}
-                renderInput={(params) => {
-                  const newParams = {
-                    ...params,
-                    inputProps: {
-                      ...params.inputProps,
-                      placeholder: 'дд.мм.гггг',
-                    },
-                    error: isDateOfBirthError ? true : false,
-                  };
-                  return (
-                    <TextField
-                      variant="outlined"
-                      {...newParams}
-                      autoComplete="off"
-                    />
-                  );
-                }}
-              />
-            </LocalizationProvider>
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isDateOfBirthError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px' }}
-            >
-              Заполните поле (дд.мм.гггг)
-            </FormHelperText>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel error={isGenderError} id="gender">
-              Пол *
-            </InputLabel>
-            <Select
-              required
-              ref={refGender}
-              error={isGenderError}
-              labelId="gender"
-              id="gender"
-              value={gender}
-              label="Пол"
-              onChange={handleGenderChange}
-            >
-              <MenuItem value={'male'}>Мужской</MenuItem>
-              <MenuItem value={'female'}>Женский</MenuItem>
-            </Select>
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isGenderError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px' }}
-            >
-              Выберите пол
-            </FormHelperText>
-          </FormControl>
-          <label htmlFor="file" className={styles.labelAvatar}>
-            <input
-              ref={refInputFile}
-              name="file"
-              id="file"
-              type="file"
-              accept="image/*"
-              className={styles.inputFile}
-              onChange={handleInputFileChange}
-              required
-            />
-            <img
-              ref={refAvatar}
-              src={emptyAvatar}
-              alt="Фото пользователя"
-              className={styles.avatar}
-            />
-            <img alt="Upload" src={upload} className={styles.editIcon} />
-            <FormHelperText
-              error
-              className={`${styles.errorInput} ${
-                isFileError && styles.errorInput_active
-              }`}
-              sx={{ marginBottom: '10px', textAlign: 'center' }}
-            >
-              Загрузите фото
-            </FormHelperText>
-          </label>
+          <InputName ref={refName} />
+          <InputEmail ref={refEmail} />
+          <InputPassword ref={refPassword} />
+          <InputDateOfBirth />
+          <InputGender ref={refGender} />
+          <InputAvatar />
           <Button variant="contained" type="submit" className={styles.button}>
             Зарегистрироваться
           </Button>

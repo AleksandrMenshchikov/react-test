@@ -1,0 +1,7 @@
+.errorInput {
+  opacity: 0;
+}
+
+.errorInput_active {
+  opacity: 1;
+}
