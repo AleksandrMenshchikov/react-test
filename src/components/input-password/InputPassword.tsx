@@ -16,7 +16,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../redux/hooks';
 
-const InputPassword = React.forwardRef((props, ref) => {
+const InputPassword = () => {
   const { password, isPasswordError, typeInputPassword, isShowErrors } =
     useSelector(selectIndex);
   const dispatch = useAppDispatch();
@@ -48,7 +48,6 @@ const InputPassword = React.forwardRef((props, ref) => {
     <FormControl fullWidth>
       <TextField
         variant="outlined"
-        inputRef={ref}
         error={isPasswordError}
         type={typeInputPassword}
         id="password"
@@ -92,6 +91,6 @@ const InputPassword = React.forwardRef((props, ref) => {
       </FormHelperText>
     </FormControl>
   );
-});
+};
 
 export default React.memo(InputPassword);

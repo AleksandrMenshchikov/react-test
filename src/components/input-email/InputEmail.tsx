@@ -11,7 +11,7 @@ import {
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
-const InputEmail = React.forwardRef((props, ref) => {
+const InputEmail = () => {
   const { email, isEmailError, isShowErrors } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
@@ -30,7 +30,6 @@ const InputEmail = React.forwardRef((props, ref) => {
     <FormControl fullWidth>
       <TextField
         variant="outlined"
-        inputRef={ref}
         error={isEmailError}
         type="email"
         id="email"
@@ -52,6 +51,6 @@ const InputEmail = React.forwardRef((props, ref) => {
       </FormHelperText>
     </FormControl>
   );
-});
+};
 
 export default React.memo(InputEmail);

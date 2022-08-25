@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectIndex, postGender } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
-const InputGender = React.forwardRef((props, ref) => {
+const InputGender = () => {
   const { gender, isGenderError } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
@@ -24,7 +24,6 @@ const InputGender = React.forwardRef((props, ref) => {
       </InputLabel>
       <Select
         required
-        ref={ref}
         error={isGenderError}
         labelId="gender"
         id="gender"
@@ -46,6 +45,6 @@ const InputGender = React.forwardRef((props, ref) => {
       </FormHelperText>
     </FormControl>
   );
-});
+};
 
 export default React.memo(InputGender);

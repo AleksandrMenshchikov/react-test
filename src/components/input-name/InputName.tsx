@@ -11,7 +11,7 @@ import {
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
-const InputName = React.forwardRef((props, ref) => {
+const InputName = () => {
   const { name, isNameError, isShowErrors } = useSelector(selectIndex);
   const dispatch = useAppDispatch();
 
@@ -30,7 +30,6 @@ const InputName = React.forwardRef((props, ref) => {
     <FormControl fullWidth>
       <TextField
         variant="outlined"
-        inputRef={ref}
         error={isNameError}
         type="text"
         id="name"
@@ -54,6 +53,6 @@ const InputName = React.forwardRef((props, ref) => {
       </FormHelperText>
     </FormControl>
   );
-});
+};
 
 export default React.memo(InputName);

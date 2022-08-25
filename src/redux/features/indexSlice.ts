@@ -15,7 +15,7 @@ export interface IndexState {
   typeInputPassword: 'text' | 'password';
   isShowErrors: boolean;
   isFileError: boolean;
-  isFileInput: boolean;
+  avatar: string;
 }
 
 const initialState: IndexState = {
@@ -32,7 +32,7 @@ const initialState: IndexState = {
   typeInputPassword: 'password',
   isShowErrors: false,
   isFileError: false,
-  isFileInput: false,
+  avatar: '',
 };
 
 export const indexSlice = createSlice({
@@ -81,8 +81,8 @@ export const indexSlice = createSlice({
     setIsFileError: (state, action: PayloadAction<boolean>) => {
       state.isFileError = action.payload;
     },
-    setIsFileInput: (state, action: PayloadAction<boolean>) => {
-      state.isFileInput = action.payload;
+    setAvatar: (state, action: PayloadAction<string>) => {
+      state.avatar = action.payload;
     },
   },
 });
@@ -101,7 +101,7 @@ export const {
   setIsShowErrors,
   setGender,
   setIsFileError,
-  setIsFileInput,
+  setAvatar,
 } = indexSlice.actions;
 
 export const selectIndex = (state: RootState) => state.index;
@@ -117,5 +117,51 @@ export const postGender =
         : dispatch(setIsGenderError(true));
     }
   };
+
+export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
+  const currentState = selectIndex(getState());
+  dispatch(setIsShowErrors(true));
+  currentState.isNameError || !currentState.name
+    ? dispatch(setIsNameError(true))
+    : dispatch(setIsNameError(false));
+  currentState.isEmailError || !currentState.email
+    ? dispatch(setIsEmailError(true))
+    : dispatch(setIsEmailError(false));
+  currentState.isPasswordError || !currentState.password
+    ? dispatch(setIsPasswordError(true))
+    : dispatch(setIsPasswordError(false));
+  currentState.isDateOfBirthError || !currentState.dateOfBirth
+    ? dispatch(setIsDateOfBirthError(true))
+    : dispatch(setIsDateOfBirthError(false));
+  currentState.gender
+    ? dispatch(setIsGenderError(false))
+    : dispatch(setIsGenderError(true));
+  if (currentState.avatar) {
+    dispatch(setIsFileError(false));
+  } else {
+    dispatch(setIsFileError(true));
+  }
+
+  const newCurrentState = selectIndex(getState());
+  const {
+    isDateOfBirthError,
+    isEmailError,
+    isFileError,
+    isGenderError,
+    isNameError,
+    isPasswordError,
+  } = newCurrentState;
+
+  if (
+    !isDateOfBirthError &&
+    !isEmailError &&
+    !isFileError &&
+    !isGenderError &&
+    !isNameError &&
+    !isPasswordError
+  ) {
+    dispatch(setIsShowErrors(false));
+  }
+};
 
 export default indexSlice.reducer;

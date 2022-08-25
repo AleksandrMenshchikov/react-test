@@ -15,7 +15,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
 
-const InputDateOfBirth = React.forwardRef((props, ref) => {
+const InputDateOfBirth = () => {
   const { dateOfBirth, isDateOfBirthError, isShowErrors } =
     useSelector(selectIndex);
   const dispatch = useAppDispatch();
@@ -76,6 +76,6 @@ const InputDateOfBirth = React.forwardRef((props, ref) => {
       </FormHelperText>
     </FormControl>
   );
-});
+};
 
 export default React.memo(InputDateOfBirth);

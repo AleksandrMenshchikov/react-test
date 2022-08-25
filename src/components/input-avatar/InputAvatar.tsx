@@ -6,10 +6,11 @@ import upload from '../../images/upload.png';
 import {
   selectIndex,
   setIsFileError,
-  setIsFileInput,
+  setAvatar,
 } from '../../redux/features/indexSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
+import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
   const { isFileError } = useSelector(selectIndex);
@@ -17,13 +18,13 @@ const InputAvatar = () => {
   const refInputFile = useRef<HTMLInputElement>(null);
   const refAvatar = useRef<HTMLImageElement>(null);
 
-  function handleInputFileChange(evt: { currentTarget: { files: any } }) {
-    if (evt.currentTarget.files[0]) {
-      dispatch(setIsFileInput(true));
+  async function handleInputFileChange(evt: any) {
+    if (evt.target.files[0]) {
+      const resizedAvatar: any = await resizeFile(evt.target.files[0]);
+      dispatch(setAvatar(resizedAvatar));
       dispatch(setIsFileError(false));
-      const url = window.URL.createObjectURL(evt.currentTarget.files[0]);
       if (refAvatar.current) {
-        refAvatar.current.src = url;
+        refAvatar.current.src = resizedAvatar;
       }
     }
   }
