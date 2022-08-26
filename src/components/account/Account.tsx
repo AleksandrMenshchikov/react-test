@@ -10,10 +10,19 @@ import { useSelector } from 'react-redux';
 import InputNameAccount from '../input-name-account/InputNameAccount';
 import InputPasswordAccount from '../input-password-account/InputPasswordAccount';
 import InputAvatarAccount from '../input-avatar-account/InputAvatarAccount';
+import {
+  selectAccount,
+  setAvatar,
+  setIsFormEdit,
+  setName,
+  setPassword,
+  runFormSubmitAccount,
+} from '../../redux/features/accountSlice';
 
 function Account() {
   const { isOpen } = useSelector(selectModal);
   const { user } = useSelector(selectUser);
+  const { isFormEdit } = useSelector(selectAccount);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -26,7 +35,21 @@ function Account() {
     dispatch(setIsOpen(false));
   }
 
-  function handleFormSubmit(evt: any) {}
+  function handleFormSubmit(evt: any) {
+    evt.preventDefault();
+    dispatch(runFormSubmitAccount());
+  }
+
+  function handleEditButtonClick() {
+    dispatch(setIsFormEdit(true));
+  }
+
+  function handleCancelButtonClick() {
+    dispatch(setIsFormEdit(false));
+    dispatch(setName(user.name));
+    dispatch(setPassword(''));
+    dispatch(setAvatar(user.avatar));
+  }
 
   return (
     <div className={styles.container}>
@@ -44,6 +67,31 @@ function Account() {
           <InputNameAccount />
           <InputPasswordAccount />
           <InputAvatarAccount />
+          <div className={styles.buttonContainer}>
+            <Button
+              variant="contained"
+              type="button"
+              onClick={handleEditButtonClick}
+            >
+              Редактировать
+            </Button>
+            <Button
+              variant="outlined"
+              type="button"
+              disabled={!isFormEdit}
+              onClick={handleCancelButtonClick}
+            >
+              Отменить
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              type="submit"
+              disabled={!isFormEdit}
+            >
+              Сохранить
+            </Button>
+          </div>
         </form>
       </div>
       <Modal

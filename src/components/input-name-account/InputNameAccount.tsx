@@ -13,7 +13,7 @@ import { selectUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputName = () => {
-  const { name, isNameError, isShowErrors, statusAccount } =
+  const { name, isNameError, isShowErrors, statusAccount, isFormEdit } =
     useSelector(selectAccount);
   const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ const InputName = () => {
   return (
     <FormControl fullWidth>
       <TextField
-        disabled={statusAccount === 'loading'}
+        disabled={statusAccount === 'loading' || !isFormEdit}
         variant="outlined"
         error={isNameError}
         type="text"
@@ -45,7 +45,6 @@ const InputName = () => {
         onChange={handleNameChange}
         label="Имя"
         autoFocus
-        required
         inputProps={{ minLength: 2, maxLength: 100 }}
         autoComplete="name"
         placeholder="Имя"

@@ -17,8 +17,14 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputPassword = () => {
-  const { password, isPasswordError, typeInputPassword, isShowErrors, statusAccount } =
-    useSelector(selectAccount);
+  const {
+    password,
+    isPasswordError,
+    typeInputPassword,
+    isShowErrors,
+    statusAccount,
+    isFormEdit,
+  } = useSelector(selectAccount);
   const dispatch = useAppDispatch();
 
   function handlePasswordChange(evt: {
@@ -47,7 +53,7 @@ const InputPassword = () => {
   return (
     <FormControl fullWidth>
       <TextField
-        disabled={statusAccount === 'loading'}
+        disabled={statusAccount === 'loading' || !isFormEdit}
         variant="outlined"
         error={isPasswordError}
         type={typeInputPassword}
@@ -55,7 +61,6 @@ const InputPassword = () => {
         value={password}
         onChange={handlePasswordChange}
         label="Новый пароль"
-        required
         placeholder="минимум 6 символов"
         inputProps={{
           minLength: 6,

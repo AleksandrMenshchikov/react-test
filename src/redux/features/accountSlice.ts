@@ -14,6 +14,7 @@ export interface AccountState {
   isShowErrors: boolean;
   isFileError: boolean;
   avatar: string;
+  isFormEdit: boolean;
 }
 
 const initialState: AccountState = {
@@ -27,6 +28,7 @@ const initialState: AccountState = {
   isShowErrors: false,
   isFileError: false,
   avatar: '',
+  isFormEdit: false,
 };
 
 export const patchUser = createAsyncThunk(
@@ -80,6 +82,9 @@ export const accountSlice = createSlice({
     setAvatar: (state, action: PayloadAction<string>) => {
       state.avatar = action.payload;
     },
+    setIsFormEdit: (state, action: PayloadAction<boolean>) => {
+      state.isFormEdit = action.payload;
+    },
     resetForm: (state) => {
       state.data = null;
       state.statusAccount = 'idle';
@@ -117,6 +122,7 @@ export const {
   setIsNameErrorAccount,
   setIsFileError,
   setAvatar,
+  setIsFormEdit,
 } = accountSlice.actions;
 
 export const selectAccount = (state: RootState) => state.account;

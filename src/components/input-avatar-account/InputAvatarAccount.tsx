@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
-  const { isFileError, statusAccount, avatar } = useSelector(selectAccount);
+  const { isFileError, statusAccount, avatar, isFormEdit } = useSelector(selectAccount);
   const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const refInputFile = useRef<HTMLInputElement>(null);
@@ -41,7 +41,7 @@ const InputAvatar = () => {
     <>
       <label htmlFor="file" className={styles.labelAvatar}>
         <input
-          disabled={statusAccount === 'loading'}
+          disabled={statusAccount === 'loading' || !isFormEdit}
           ref={refInputFile}
           name="file"
           id="file"
