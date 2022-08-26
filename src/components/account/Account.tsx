@@ -25,6 +25,7 @@ import {
   runFormSubmitAccount,
   setIsNameErrorAccount,
   setIsPasswordError,
+  setIsShowErrors,
 } from '../../redux/features/accountSlice';
 
 function Account() {
@@ -46,6 +47,7 @@ function Account() {
       dispatch(setIsSuccess(true));
       dispatch(setUser(data.data));
       dispatch(setPassword(''));
+      dispatch(setIsShowErrors(false));
     } else if (data?.message && statusAccount === 'idle') {
       dispatch(setIsOpen(true));
       dispatch(setMessage(data.message));
