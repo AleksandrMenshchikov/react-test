@@ -17,7 +17,11 @@ import {
   setMessage,
   setIsSuccess,
 } from '../../redux/features/modalSlice';
-import { runFormSubmitSignin } from '../../redux/features/signinSlice';
+import {
+  runFormSubmitSignin,
+  selectSignin,
+  resetFormSignin,
+} from '../../redux/features/signinSlice';
 import { setUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import InputName from '../input-name/InputName';
@@ -37,6 +41,7 @@ function Index() {
     status: statusSignup,
     data,
   } = useSelector(selectSignup);
+  const { statusSignin, data: dataSignin } = useSelector(selectSignin);
   const { isOpen } = useSelector(selectModal);
   const dispatch = useAppDispatch();
   const [isFormSignin, setIsFormSignin] = useState(true);
@@ -58,6 +63,7 @@ function Index() {
       dispatch(setIsSuccess(true));
       dispatch(setUser(data.data));
       dispatch(resetForm());
+      dispatch(resetFormSignin());
     } else if (data?.message && statusSignup === 'idle') {
       dispatch(setIsOpen(true));
       dispatch(setMessage(data.message));
@@ -69,6 +75,26 @@ function Index() {
       dispatch(setIsSuccess(false));
     }
   }, [data, dispatch, statusSignup]);
+
+  useEffect(() => {
+    if (dataSignin?.data && statusSignin === 'idle') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage('Вы успешно авторизованы'));
+      dispatch(setIsSuccess(true));
+      dispatch(setUser(dataSignin.data));
+      dispatch(resetForm());
+      dispatch(resetFormSignin());
+    } else if (dataSignin?.message && statusSignin === 'idle') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage(dataSignin.message));
+      dispatch(setIsSuccess(false));
+    }
+    if (statusSignin === 'failed') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage('Что-то пошло не так'));
+      dispatch(setIsSuccess(false));
+    }
+  }, [dataSignin, dispatch, statusSignin]);
 
   function handleFormSubmit(evt: {
     preventDefault: () => void;
@@ -100,7 +126,7 @@ function Index() {
             >
               <InputEmailSignin />
               <InputPasswordSignin />
-              {statusSignup === 'loading' ? (
+              {statusSignin === 'loading' ? (
                 <LoadingButton
                   loading
                   variant="outlined"
@@ -122,6 +148,7 @@ function Index() {
                 <Button
                   variant="outlined"
                   onClick={() => setIsFormSignin(false)}
+                  disabled={statusSignin === 'loading'}
                 >
                   Зарегистрироваться
                 </Button>

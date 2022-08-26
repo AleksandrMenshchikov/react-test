@@ -30,7 +30,7 @@ class Api {
 
   signin(data: { email: string; password: string }) {
     return fetch(`${this._baseUrl}/signin`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },

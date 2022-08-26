@@ -12,7 +12,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputEmail = () => {
-  const { email, isEmailError, isShowErrors, status } =
+  const { email, isEmailError, isShowErrors, statusSignin } =
     useSelector(selectSignin);
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ const InputEmail = () => {
     <FormControl fullWidth>
       <TextField
         autoFocus
-        disabled={status === 'loading'}
+        disabled={statusSignin === 'loading'}
         variant="outlined"
         error={isEmailError}
         type="email"

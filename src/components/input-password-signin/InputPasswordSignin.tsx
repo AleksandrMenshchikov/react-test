@@ -17,8 +17,13 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputPassword = () => {
-  const { password, isPasswordError, typeInputPassword, isShowErrors, status } =
-    useSelector(selectSignin);
+  const {
+    password,
+    isPasswordError,
+    typeInputPassword,
+    isShowErrors,
+    statusSignin,
+  } = useSelector(selectSignin);
   const dispatch = useAppDispatch();
 
   function handlePasswordChange(evt: {
@@ -47,7 +52,7 @@ const InputPassword = () => {
   return (
     <FormControl fullWidth>
       <TextField
-        disabled={status === 'loading'}
+        disabled={statusSignin === 'loading'}
         variant="outlined"
         error={isPasswordError}
         type={typeInputPassword}

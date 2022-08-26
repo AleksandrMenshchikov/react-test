@@ -4,7 +4,7 @@ import { AppThunk, RootState } from '../store';
 
 export interface SigninState {
   data: any;
-  status: 'idle' | 'loading' | 'failed';
+  statusSignin: 'idle' | 'loading' | 'failed';
   email: string;
   isEmailError: boolean;
   password: string;
@@ -15,7 +15,7 @@ export interface SigninState {
 
 const initialState: SigninState = {
   data: null,
-  status: 'idle',
+  statusSignin: 'idle',
   email: '',
   isEmailError: false,
   password: '',
@@ -65,10 +65,9 @@ export const signinSlice = createSlice({
     setIsShowErrors: (state, action: PayloadAction<boolean>) => {
       state.isShowErrors = action.payload;
     },
-
-    resetForm: (state) => {
+    resetFormSignin: (state) => {
       state.data = null;
-      state.status = 'idle';
+      state.statusSignin = 'idle';
       state.email = '';
       state.isEmailError = false;
       state.password = '';
@@ -80,14 +79,14 @@ export const signinSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(authUser.pending, (state) => {
-        state.status = 'loading';
+        state.statusSignin = 'loading';
       })
       .addCase(authUser.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.statusSignin = 'idle';
         state.data = action.payload;
       })
       .addCase(authUser.rejected, (state) => {
-        state.status = 'failed';
+        state.statusSignin = 'failed';
       });
   },
 });
@@ -99,7 +98,7 @@ export const {
   setIsPasswordError,
   setTypeInputPassword,
   setIsShowErrors,
-  resetForm,
+  resetFormSignin,
 } = signinSlice.actions;
 
 export const selectSignin = (state: RootState) => state.signin;
