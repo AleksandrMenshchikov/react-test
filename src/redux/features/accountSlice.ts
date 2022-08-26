@@ -129,23 +129,21 @@ export const selectAccount = (state: RootState) => state.account;
 
 export const runFormSubmitAccount = (): AppThunk => (dispatch, getState) => {
   const currentState = selectAccount(getState());
+
   dispatch(setIsShowErrors(true));
-  currentState.isNameError || !currentState.name
+  currentState.name.length < 2
     ? dispatch(setIsNameErrorAccount(true))
     : dispatch(setIsNameErrorAccount(false));
-  currentState.isPasswordError || !currentState.password
+  currentState.password.length !== 0 &&
+  currentState.password.length > 0 &&
+  currentState.password.length < 6
     ? dispatch(setIsPasswordError(true))
     : dispatch(setIsPasswordError(false));
-  if (currentState.avatar) {
-    dispatch(setIsFileError(false));
-  } else {
-    dispatch(setIsFileError(true));
-  }
 
   const newCurrentState = selectAccount(getState());
-  const { isFileError, isNameError, isPasswordError } = newCurrentState;
+  const { isNameError, isPasswordError } = newCurrentState;
 
-  if (!isFileError && !isNameError && !isPasswordError) {
+  if (!isNameError && !isPasswordError) {
     const { name, password, avatar } = selectAccount(getState());
     const { _id } = selectUser(getState()).user;
     dispatch(patchUser({ id: _id, name, password, avatar }));

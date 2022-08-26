@@ -4,12 +4,18 @@ import { Box, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import ModalMessage from '../modal-message/ModalMessage';
 import { useAppDispatch } from '../../redux/hooks';
-import { selectModal, setIsOpen } from '../../redux/features/modalSlice';
-import { selectUser } from '../../redux/features/userSlice';
+import {
+  selectModal,
+  setIsOpen,
+  setIsSuccess,
+  setMessage,
+} from '../../redux/features/modalSlice';
+import { selectUser, setUser } from '../../redux/features/userSlice';
 import { useSelector } from 'react-redux';
 import InputNameAccount from '../input-name-account/InputNameAccount';
 import InputPasswordAccount from '../input-password-account/InputPasswordAccount';
 import InputAvatarAccount from '../input-avatar-account/InputAvatarAccount';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   selectAccount,
   setAvatar,
@@ -17,12 +23,14 @@ import {
   setName,
   setPassword,
   runFormSubmitAccount,
+  setIsNameErrorAccount,
+  setIsPasswordError,
 } from '../../redux/features/accountSlice';
 
 function Account() {
   const { isOpen } = useSelector(selectModal);
   const { user } = useSelector(selectUser);
-  const { isFormEdit } = useSelector(selectAccount);
+  const { isFormEdit, statusAccount, data } = useSelector(selectAccount);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,6 +38,25 @@ function Account() {
       dispatch(setIsOpen(true));
     }
   }, []);
+
+  useEffect(() => {
+    if (data?.data && statusAccount === 'idle') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage('Вы успешно обновили данные'));
+      dispatch(setIsSuccess(true));
+      dispatch(setUser(data.data));
+      dispatch(setPassword(''));
+    } else if (data?.message && statusAccount === 'idle') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage(data.message));
+      dispatch(setIsSuccess(false));
+    }
+    if (statusAccount === 'failed') {
+      dispatch(setIsOpen(true));
+      dispatch(setMessage('Что-то пошло не так'));
+      dispatch(setIsSuccess(false));
+    }
+  }, [data, dispatch, statusAccount]);
 
   function handleModalClose() {
     dispatch(setIsOpen(false));
@@ -49,6 +76,8 @@ function Account() {
     dispatch(setName(user.name));
     dispatch(setPassword(''));
     dispatch(setAvatar(user.avatar));
+    dispatch(setIsNameErrorAccount(false));
+    dispatch(setIsPasswordError(false));
   }
 
   return (
@@ -72,25 +101,34 @@ function Account() {
               variant="contained"
               type="button"
               onClick={handleEditButtonClick}
+              disabled={statusAccount === 'loading'}
             >
               Редактировать
             </Button>
             <Button
               variant="outlined"
               type="button"
-              disabled={!isFormEdit}
+              disabled={!isFormEdit || statusAccount === 'loading'}
               onClick={handleCancelButtonClick}
             >
               Отменить
             </Button>
-            <Button
-              variant="contained"
-              color="success"
-              type="submit"
-              disabled={!isFormEdit}
-            >
-              Сохранить
-            </Button>
+            {statusAccount === 'loading' ? (
+              <LoadingButton
+                loading
+                variant="outlined"
+                className={styles.buttonLoading}
+              />
+            ) : (
+              <Button
+                variant="contained"
+                color="success"
+                type="submit"
+                disabled={!isFormEdit}
+              >
+                Сохранить
+              </Button>
+            )}
           </div>
         </form>
       </div>

@@ -45,3 +45,8 @@
   flex-wrap: wrap;
   width: 100%;
 }
+
+.buttonLoading {
+  height: 36.5px;
+  width: 117.21px;
+}

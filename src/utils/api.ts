@@ -34,7 +34,7 @@ class Api {
     password: string;
     avatar: string;
   }) {
-    return fetch(`${this._baseUrl}/users/${data.id}`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

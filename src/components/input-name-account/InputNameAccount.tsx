@@ -27,9 +27,9 @@ const InputName = () => {
   }) {
     dispatch(setName(evt.currentTarget.value.trimStart()));
     if (isShowErrors) {
-      evt.currentTarget.checkValidity()
-        ? dispatch(setIsNameErrorAccount(false))
-        : dispatch(setIsNameErrorAccount(true));
+      evt.currentTarget.value.length < 2
+        ? dispatch(setIsNameErrorAccount(true))
+        : dispatch(setIsNameErrorAccount(false));
     }
   }
 

@@ -32,9 +32,11 @@ const InputPassword = () => {
   }) {
     dispatch(setPassword(evt.currentTarget.value.trimStart()));
     if (isShowErrors) {
-      evt.currentTarget.checkValidity()
-        ? dispatch(setIsPasswordError(false))
-        : dispatch(setIsPasswordError(true));
+      evt.currentTarget.value.length !== 0 &&
+      evt.currentTarget.value.length > 0 &&
+      evt.currentTarget.value.length < 6
+        ? dispatch(setIsPasswordError(true))
+        : dispatch(setIsPasswordError(false));
     }
   }
 
