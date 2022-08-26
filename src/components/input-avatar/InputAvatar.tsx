@@ -1,5 +1,5 @@
 import styles from './InputAvatar.module.css';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import FormHelperText from '@mui/material/FormHelperText';
 import emptyAvatar from '../../images/Empty-Avatar-Rund.png';
 import upload from '../../images/upload.png';
@@ -8,15 +8,25 @@ import {
   setIsFileError,
   setAvatar,
 } from '../../redux/features/indexSlice';
+import { selectUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
 import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
   const { isFileError, status } = useSelector(selectIndex);
+  const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const refInputFile = useRef<HTMLInputElement>(null);
   const refAvatar = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (user) {
+      if (refAvatar.current) {
+        refAvatar.current.src = emptyAvatar;
+      }
+    }
+  }, [user]);
 
   async function handleInputFileChange(evt: any) {
     if (evt.target.files[0]) {

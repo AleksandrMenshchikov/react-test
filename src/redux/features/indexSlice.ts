@@ -3,7 +3,7 @@ import { api } from '../../utils/api';
 import { AppThunk, RootState } from '../store';
 
 export interface IndexState {
-  data: object | null;
+  data: any;
   status: 'idle' | 'loading' | 'failed';
   name: string;
   isNameError: boolean;
@@ -55,7 +55,7 @@ export const createUser = createAsyncThunk(
       let timer = setTimeout(() => {
         resolve('result');
         clearTimeout(timer);
-      }, 5000);
+      }, 2000);
     });
     const result = await response.json();
     return result;
@@ -111,6 +111,24 @@ export const indexSlice = createSlice({
     setAvatar: (state, action: PayloadAction<string>) => {
       state.avatar = action.payload;
     },
+    resetForm: (state) => {
+      state.data = null;
+      state.status = 'idle';
+      state.name = '';
+      state.isNameError = false;
+      state.email = '';
+      state.isEmailError = false;
+      state.password = '';
+      state.isPasswordError = false;
+      state.dateOfBirth = null;
+      state.isDateOfBirthError = false;
+      state.gender = '';
+      state.isGenderError = false;
+      state.typeInputPassword = 'password';
+      state.isShowErrors = false;
+      state.isFileError = false;
+      state.avatar = '';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -142,6 +160,7 @@ export const {
   setGender,
   setIsFileError,
   setAvatar,
+  resetForm,
 } = indexSlice.actions;
 
 export const selectIndex = (state: RootState) => state.index;
@@ -200,7 +219,6 @@ export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
     !isNameError &&
     !isPasswordError
   ) {
-    dispatch(setIsShowErrors(false));
     const { name, email, password, dateOfBirth, gender, avatar } = selectIndex(
       getState()
     );

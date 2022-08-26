@@ -7,10 +7,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 62.5%;
 }
 
 :root {
   --background-color: #e6e6e5;
   --font-color-black: #1a2027;
+  --modal-box-shadow: 0 11px 15px -7px rgb(0 0 0 / 20%),
+    0 24px 38px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
+  --color-success: #2e7d32;
+  --color-error: #e62222;
 }
