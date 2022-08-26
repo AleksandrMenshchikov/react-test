@@ -1,11 +1,7 @@
 import Index from '../components/index/Index';
 
 function IndexPage() {
-  return (
-    <>
-      <Index />
-    </>
-  );
+  return <Index />;
 }
 
 export default IndexPage;
