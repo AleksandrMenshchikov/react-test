@@ -1,6 +1,7 @@
 import styles from './Account.module.css';
 import React, { useEffect } from 'react';
 import { Box, Modal } from '@mui/material';
+import Button from '@mui/material/Button';
 import ModalMessage from '../modal-message/ModalMessage';
 import { useAppDispatch } from '../../redux/hooks';
 import { selectModal, setIsOpen } from '../../redux/features/modalSlice';
@@ -12,19 +13,36 @@ function Account() {
   const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  function handleModalClose() {
-    dispatch(setIsOpen(false));
-  }
-
   useEffect(() => {
     if (user) {
       dispatch(setIsOpen(true));
     }
   }, []);
 
+  function handleModalClose() {
+    dispatch(setIsOpen(false));
+  }
+
+  function handleFormSubmit(evt: any) {}
+
   return (
-    <div>
-      <div>Account</div>
+    <div className={styles.container}>
+      <div className={styles.innerWrapper}>
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>Аккаунт</h2>
+          <Button
+            sx={{ textTransform: 'none', fontSize: '1.8rem' }}
+            variant="outlined"
+          >
+            Друзья
+          </Button>
+        </div>
+        <form
+          className={styles.form}
+          onSubmit={handleFormSubmit}
+          noValidate
+        ></form>
+      </div>
       <Modal
         open={isOpen}
         onClose={handleModalClose}
