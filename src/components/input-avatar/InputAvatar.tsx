@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
-  const { isFileError, status } = useSelector(selectSignup);
+  const { isFileError, status, avatar } = useSelector(selectSignup);
   const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const refInputFile = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ const InputAvatar = () => {
       dispatch(setAvatar(resizedAvatar));
       dispatch(setIsFileError(false));
       if (refAvatar.current) {
-        refAvatar.current.src = resizedAvatar;
+        refAvatar.current.src = avatar;
       }
     }
   }
@@ -55,7 +55,7 @@ const InputAvatar = () => {
         />
         <img
           ref={refAvatar}
-          src={emptyAvatar}
+          src={avatar || emptyAvatar}
           alt="Фото пользователя"
           className={styles.avatar}
         />

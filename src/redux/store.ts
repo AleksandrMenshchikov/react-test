@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import signupReducer from './features/signupSlice';
+import signinReducer from './features/signinSlice';
 import modalReducer from './features/modalSlice';
 import userReducer from './features/userSlice';
 
@@ -8,6 +9,7 @@ export const store = configureStore({
     signup: signupReducer,
     modal: modalReducer,
     user: userReducer,
+    signin: signinReducer,
   },
 });
 

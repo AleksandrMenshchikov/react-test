@@ -27,6 +27,16 @@ class Api {
       body: JSON.stringify(data),
     });
   }
+
+  signin(data: { email: string; password: string }) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 export const api = new Api({
