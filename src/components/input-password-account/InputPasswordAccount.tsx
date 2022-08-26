@@ -54,7 +54,7 @@ const InputPassword = () => {
         id="password"
         value={password}
         onChange={handlePasswordChange}
-        label="Пароль"
+        label="Новый пароль"
         required
         placeholder="минимум 6 символов"
         inputProps={{

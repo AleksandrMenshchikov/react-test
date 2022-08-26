@@ -22,11 +22,9 @@ const InputAvatar = () => {
 
   useEffect(() => {
     if (user) {
-      if (refAvatar.current) {
-        refAvatar.current.src = emptyAvatar;
-      }
+      dispatch(setAvatar(user.avatar));
     }
-  }, [user]);
+  }, []);
 
   async function handleInputFileChange(evt: any) {
     if (evt.target.files[0]) {

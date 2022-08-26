@@ -1,5 +1,5 @@
 import styles from './InputNameAccount.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -9,12 +9,18 @@ import {
   setName,
   setIsNameErrorAccount,
 } from '../../redux/features/accountSlice';
+import { selectUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputName = () => {
   const { name, isNameError, isShowErrors, statusAccount } =
     useSelector(selectAccount);
+  const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setName(user.name));
+  }, []);
 
   function handleNameChange(evt: {
     currentTarget: { value: string; checkValidity: () => boolean };
