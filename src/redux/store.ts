@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import indexReducer from './features/indexSlice';
+import signupReducer from './features/signupSlice';
 import modalReducer from './features/modalSlice';
 import userReducer from './features/userSlice';
 
 export const store = configureStore({
   reducer: {
-    index: indexReducer,
+    signup: signupReducer,
     modal: modalReducer,
     user: userReducer,
   },

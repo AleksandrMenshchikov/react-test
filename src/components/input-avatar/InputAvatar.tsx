@@ -4,17 +4,17 @@ import FormHelperText from '@mui/material/FormHelperText';
 import emptyAvatar from '../../images/Empty-Avatar-Rund.png';
 import upload from '../../images/upload.png';
 import {
-  selectIndex,
+  selectSignup,
   setIsFileError,
   setAvatar,
-} from '../../redux/features/indexSlice';
+} from '../../redux/features/signupSlice';
 import { selectUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
 import { resizeFile } from '../../utils/image-resizer';
 
 const InputAvatar = () => {
-  const { isFileError, status } = useSelector(selectIndex);
+  const { isFileError, status } = useSelector(selectSignup);
   const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const refInputFile = useRef<HTMLInputElement>(null);

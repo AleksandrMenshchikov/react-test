@@ -10,14 +10,14 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import {
   setDateOfBirth,
   setIsDateOfBirthError,
-  selectIndex,
-} from '../../redux/features/indexSlice';
+  selectSignup,
+} from '../../redux/features/signupSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useSelector } from 'react-redux';
 
 const InputDateOfBirth = () => {
   const { dateOfBirth, isDateOfBirthError, isShowErrors, status } =
-    useSelector(selectIndex);
+    useSelector(selectSignup);
   const dispatch = useAppDispatch();
 
   function handleDateOfBirthChange(value: number | null | Date) {

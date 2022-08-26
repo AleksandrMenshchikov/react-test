@@ -8,17 +8,17 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
-  selectIndex,
+  selectSignup,
   setPassword,
   setIsPasswordError,
   setTypeInputPassword,
-} from '../../redux/features/indexSlice';
+} from '../../redux/features/signupSlice';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputPassword = () => {
   const { password, isPasswordError, typeInputPassword, isShowErrors, status } =
-    useSelector(selectIndex);
+    useSelector(selectSignup);
   const dispatch = useAppDispatch();
 
   function handlePasswordChange(evt: {

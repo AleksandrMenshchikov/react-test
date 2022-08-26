@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { api } from '../../utils/api';
 import { AppThunk, RootState } from '../store';
 
-export interface IndexState {
+export interface SignupState {
   data: any;
   status: 'idle' | 'loading' | 'failed';
   name: string;
@@ -21,7 +21,7 @@ export interface IndexState {
   avatar: string;
 }
 
-const initialState: IndexState = {
+const initialState: SignupState = {
   data: null,
   status: 'idle',
   name: '',
@@ -41,7 +41,7 @@ const initialState: IndexState = {
 };
 
 export const createUser = createAsyncThunk(
-  'index/postUser',
+  'signup/postUser',
   async (data: {
     name: string;
     email: string;
@@ -62,8 +62,8 @@ export const createUser = createAsyncThunk(
   }
 );
 
-export const indexSlice = createSlice({
-  name: 'index',
+export const signupSlice = createSlice({
+  name: 'signup',
   initialState,
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
@@ -161,15 +161,15 @@ export const {
   setIsFileError,
   setAvatar,
   resetForm,
-} = indexSlice.actions;
+} = signupSlice.actions;
 
-export const selectIndex = (state: RootState) => state.index;
+export const selectSignup = (state: RootState) => state.signup;
 
 export const postGender =
   (gender: string): AppThunk =>
   (dispatch, getState) => {
     dispatch(setGender(gender));
-    const currentValue = selectIndex(getState());
+    const currentValue = selectSignup(getState());
     if (currentValue.isShowErrors) {
       currentValue.gender
         ? dispatch(setIsGenderError(false))
@@ -178,7 +178,7 @@ export const postGender =
   };
 
 export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
-  const currentState = selectIndex(getState());
+  const currentState = selectSignup(getState());
   dispatch(setIsShowErrors(true));
   currentState.isNameError || !currentState.name
     ? dispatch(setIsNameError(true))
@@ -201,7 +201,7 @@ export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
     dispatch(setIsFileError(true));
   }
 
-  const newCurrentState = selectIndex(getState());
+  const newCurrentState = selectSignup(getState());
   const {
     isDateOfBirthError,
     isEmailError,
@@ -219,7 +219,7 @@ export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
     !isNameError &&
     !isPasswordError
   ) {
-    const { name, email, password, dateOfBirth, gender, avatar } = selectIndex(
+    const { name, email, password, dateOfBirth, gender, avatar } = selectSignup(
       getState()
     );
     dispatch(
@@ -228,4 +228,4 @@ export const runFormSubmit = (): AppThunk => (dispatch, getState) => {
   }
 };
 
-export default indexSlice.reducer;
+export default signupSlice.reducer;

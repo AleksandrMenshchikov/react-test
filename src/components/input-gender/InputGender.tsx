@@ -6,11 +6,11 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
-import { selectIndex, postGender } from '../../redux/features/indexSlice';
+import { selectSignup, postGender } from '../../redux/features/signupSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputGender = () => {
-  const { gender, isGenderError, status } = useSelector(selectIndex);
+  const { gender, isGenderError, status } = useSelector(selectSignup);
   const dispatch = useAppDispatch();
 
   function handleGenderChange(evt: { target: { value: string } }) {

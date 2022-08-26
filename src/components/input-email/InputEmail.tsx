@@ -5,14 +5,14 @@ import TextField from '@mui/material/TextField';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useSelector } from 'react-redux';
 import {
-  selectIndex,
+  selectSignup,
   setEmail,
   setIsEmailError,
-} from '../../redux/features/indexSlice';
+} from '../../redux/features/signupSlice';
 import { useAppDispatch } from '../../redux/hooks';
 
 const InputEmail = () => {
-  const { email, isEmailError, isShowErrors, status } = useSelector(selectIndex);
+  const { email, isEmailError, isShowErrors, status } = useSelector(selectSignup);
   const dispatch = useAppDispatch();
 
   function handleEmailChange(evt: {

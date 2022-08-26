@@ -6,11 +6,11 @@ import Box from '@mui/material/Box';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import {
-  selectIndex,
   setIsFileError,
   runFormSubmit,
   resetForm,
-} from '../../redux/features/indexSlice';
+  selectSignup,
+} from '../../redux/features/signupSlice';
 import {
   selectModal,
   setIsOpen,
@@ -28,7 +28,7 @@ import InputAvatar from '../input-avatar/InputAvatar';
 import ModalMessage from '../modal-message/ModalMessage';
 
 function Index() {
-  const { isShowErrors, avatar, status, data } = useSelector(selectIndex);
+  const { isShowErrors, avatar, status, data } = useSelector(selectSignup);
   const { isOpen } = useSelector(selectModal);
   const dispatch = useAppDispatch();
 
