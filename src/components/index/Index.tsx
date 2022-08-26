@@ -22,6 +22,7 @@ import {
   selectSignin,
   resetFormSignin,
 } from '../../redux/features/signinSlice';
+import { selectUser } from '../../redux/features/userSlice';
 import { setUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import InputName from '../input-name/InputName';
@@ -33,6 +34,7 @@ import InputAvatar from '../input-avatar/InputAvatar';
 import ModalMessage from '../modal-message/ModalMessage';
 import InputEmailSignin from '../input-email-signin/InputEmailSignin';
 import InputPasswordSignin from '../input-password-signin/InputPasswordSignin';
+import { Navigate } from 'react-router-dom';
 
 function Index() {
   const {
@@ -43,6 +45,7 @@ function Index() {
   } = useSelector(selectSignup);
   const { statusSignin, data: dataSignin } = useSelector(selectSignin);
   const { isOpen } = useSelector(selectModal);
+  const { user } = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const [isFormSignin, setIsFormSignin] = useState(true);
 
@@ -111,6 +114,10 @@ function Index() {
 
   function handleModalClose() {
     dispatch(setIsOpen(false));
+  }
+
+  if (user) {
+    return <Navigate replace={true} to="/account" />;
   }
 
   return (

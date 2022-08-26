@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import IndexPage from './routes/Index';
 import NotFoundPage from './routes/notFound';
+import AccountPage from './routes/account';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -17,6 +18,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<IndexPage />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
