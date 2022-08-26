@@ -3,6 +3,7 @@ import signupReducer from './features/signupSlice';
 import signinReducer from './features/signinSlice';
 import modalReducer from './features/modalSlice';
 import userReducer from './features/userSlice';
+import accountReducer from './features/accountSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     modal: modalReducer,
     user: userReducer,
     signin: signinReducer,
+    account: accountReducer,
   },
 });
 

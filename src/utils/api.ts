@@ -28,6 +28,21 @@ class Api {
     });
   }
 
+  patchUser(data: {
+    id: string;
+    name: string;
+    password: string;
+    avatar: string;
+  }) {
+    return fetch(`${this._baseUrl}/users/${data.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
   signin(data: { email: string; password: string }) {
     return fetch(`${this._baseUrl}/signin`, {
       method: 'POST',

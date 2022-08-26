@@ -7,6 +7,9 @@ import { useAppDispatch } from '../../redux/hooks';
 import { selectModal, setIsOpen } from '../../redux/features/modalSlice';
 import { selectUser } from '../../redux/features/userSlice';
 import { useSelector } from 'react-redux';
+import InputNameAccount from '../input-name-account/InputNameAccount';
+import InputPasswordAccount from '../input-password-account/InputPasswordAccount';
+import InputAvatarAccount from '../input-avatar-account/InputAvatarAccount';
 
 function Account() {
   const { isOpen } = useSelector(selectModal);
@@ -37,11 +40,11 @@ function Account() {
             Друзья
           </Button>
         </div>
-        <form
-          className={styles.form}
-          onSubmit={handleFormSubmit}
-          noValidate
-        ></form>
+        <form className={styles.form} onSubmit={handleFormSubmit} noValidate>
+          <InputNameAccount />
+          <InputPasswordAccount />
+          <InputAvatarAccount />
+        </form>
       </div>
       <Modal
         open={isOpen}
