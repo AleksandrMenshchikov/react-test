@@ -1,11 +1,12 @@
 import styles from './Account.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import ModalMessage from '../modal-message/ModalMessage';
 import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAppDispatch } from '../../redux/hooks';
+import { Link } from 'react-router-dom';
 import {
   selectModal,
   setIsOpen,
@@ -35,33 +36,30 @@ function Account() {
   const { user } = useSelector(selectUser);
   const { isFormEdit, statusAccount, data } = useSelector(selectAccount);
   const dispatch = useAppDispatch();
+  const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      dispatch(setIsOpen(true));
+    if (isShowModal) {
+      if (data?.data && statusAccount === 'idle') {
+        dispatch(setIsOpen(true));
+        dispatch(setMessage('Вы успешно обновили данные'));
+        dispatch(setIsSuccess(true));
+        dispatch(setUser(data.data));
+        dispatch(setPassword(''));
+        dispatch(setIsShowErrors(false));
+        dispatch(setIsFormEdit(false));
+      } else if (data?.message && statusAccount === 'idle') {
+        dispatch(setIsOpen(true));
+        dispatch(setMessage(data.message));
+        dispatch(setIsSuccess(false));
+      }
+      if (statusAccount === 'failed') {
+        dispatch(setIsOpen(true));
+        dispatch(setMessage('Что-то пошло не так'));
+        dispatch(setIsSuccess(false));
+      }
     }
-  }, []);
-
-  useEffect(() => {
-    if (data?.data && statusAccount === 'idle') {
-      dispatch(setIsOpen(true));
-      dispatch(setMessage('Вы успешно обновили данные'));
-      dispatch(setIsSuccess(true));
-      dispatch(setUser(data.data));
-      dispatch(setPassword(''));
-      dispatch(setIsShowErrors(false));
-      dispatch(setIsFormEdit(false));
-    } else if (data?.message && statusAccount === 'idle') {
-      dispatch(setIsOpen(true));
-      dispatch(setMessage(data.message));
-      dispatch(setIsSuccess(false));
-    }
-    if (statusAccount === 'failed') {
-      dispatch(setIsOpen(true));
-      dispatch(setMessage('Что-то пошло не так'));
-      dispatch(setIsSuccess(false));
-    }
-  }, [data, dispatch, statusAccount]);
+  }, [data, dispatch, statusAccount, isShowModal]);
 
   function handleModalClose() {
     dispatch(setIsOpen(false));
@@ -70,6 +68,7 @@ function Account() {
   function handleFormSubmit(evt: any) {
     evt.preventDefault();
     dispatch(runFormSubmitAccount());
+    setIsShowModal(true);
   }
 
   function handleEditButtonClick() {
@@ -94,12 +93,15 @@ function Account() {
       <div className={styles.innerWrapper}>
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>Аккаунт</h2>
-          <Button
-            sx={{ textTransform: 'none', fontSize: '1.8rem' }}
-            variant="outlined"
-          >
-            Друзья
-          </Button>
+          <Link to="/people" style={{ textDecoration: 'none' }}>
+            <Button
+              sx={{ textTransform: 'none', fontSize: '1.8rem' }}
+              variant="outlined"
+            >
+              Друзья
+            </Button>
+          </Link>
+
           <IconButton onClick={handleLogoutClick}>
             <LogoutIcon sx={{ fontSize: '24px' }} />
           </IconButton>

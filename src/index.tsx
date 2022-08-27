@@ -8,6 +8,7 @@ import './index.css';
 import IndexPage from './routes/Index';
 import NotFoundPage from './routes/notFound';
 import AccountPage from './routes/account';
+import PeoplePage from './routes/people';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -19,6 +20,7 @@ root.render(
         <Routes>
           <Route path="/" element={<IndexPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/people" element={<PeoplePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
