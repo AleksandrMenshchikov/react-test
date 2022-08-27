@@ -21,7 +21,7 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin-bottom: 25px;
 }
 
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -49,4 +49,10 @@
 .buttonLoading {
   height: 36.5px;
   width: 117.21px;
+}
+
+@media screen and (max-width: 460px) {
+  .buttonContainer {
+    justify-content: space-evenly;
+  }
 }

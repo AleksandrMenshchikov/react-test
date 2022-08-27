@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { Box, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import ModalMessage from '../modal-message/ModalMessage';
+import IconButton from '@mui/material/IconButton';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useAppDispatch } from '../../redux/hooks';
 import {
   selectModal,
@@ -83,6 +85,10 @@ function Account() {
     dispatch(setIsPasswordError(false));
   }
 
+  function handleLogoutClick() {
+    dispatch(setUser(null));
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.innerWrapper}>
@@ -94,6 +100,9 @@ function Account() {
           >
             Друзья
           </Button>
+          <IconButton onClick={handleLogoutClick}>
+            <LogoutIcon sx={{ fontSize: '24px' }} />
+          </IconButton>
         </div>
         <form className={styles.form} onSubmit={handleFormSubmit} noValidate>
           <InputNameAccount />
