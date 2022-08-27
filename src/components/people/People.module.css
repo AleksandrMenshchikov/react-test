@@ -30,3 +30,33 @@
   margin: 0;
   font-weight: 500;
 }
+
+.list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: auto;
+  gap: 20px;
+  justify-content: center;
+}
+
+.listItem {
+  list-style: none;
+  border: 1px solid var(--background-color);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+}
+
+.text {
+  margin: 10px 0 0;
+}

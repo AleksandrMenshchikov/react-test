@@ -44,6 +44,24 @@ function People() {
             <LogoutIcon sx={{ fontSize: '24px' }} />
           </IconButton>
         </div>
+        <ul className={styles.list}>
+          {data &&
+            status === 'idle' &&
+            data.data.map((item: any) => {
+              return (
+                <li key={item._id} className={styles.listItem}>
+                  <img alt="Фото" src={item.avatar} className={styles.img} />
+                  <h4 className={styles.text}>{item.name}</h4>
+                  <p className={styles.text}>
+                    Возраст:{' '}
+                    {Math.floor(
+                      (new Date().getTime() - item.dateOfBirth) / 31556952000
+                    )}
+                  </p>
+                </li>
+              );
+            })}
+        </ul>
       </div>
 
       <Backdrop
