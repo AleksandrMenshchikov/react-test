@@ -30,6 +30,7 @@ import {
   setIsPasswordError,
   setIsShowErrors,
 } from '../../redux/features/accountSlice';
+import { resetDataPeople } from '../../redux/features/peopleSlice';
 
 function Account() {
   const { isOpen } = useSelector(selectModal);
@@ -86,6 +87,7 @@ function Account() {
 
   function handleLogoutClick() {
     dispatch(setUser(null));
+    dispatch(resetDataPeople());
   }
 
   return (

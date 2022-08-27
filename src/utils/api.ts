@@ -52,6 +52,16 @@ class Api {
       body: JSON.stringify(data),
     });
   }
+
+  getUsers(data: { id: string }) {
+    return fetch(`${this._baseUrl}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 export const api = new Api({

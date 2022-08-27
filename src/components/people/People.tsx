@@ -2,15 +2,29 @@ import styles from './People.module.css';
 import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Button from '@mui/material/Button';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import { setUser } from '../../redux/features/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { resetDataPeople, runGetUsers } from '../../redux/features/peopleSlice';
+import { selectPeople } from '../../redux/features/peopleSlice';
+import { useSelector } from 'react-redux';
 
 function People() {
   const dispatch = useAppDispatch();
+  const { status, data } = useSelector(selectPeople);
+
+  useEffect(() => {
+    if (!data) {
+      dispatch(runGetUsers());
+    }
+  }, []);
 
   function handleLogoutClick() {
     dispatch(setUser(null));
+    dispatch(resetDataPeople());
   }
 
   return (
@@ -31,6 +45,13 @@ function People() {
           </IconButton>
         </div>
       </div>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={status === 'loading' ? true : false}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }

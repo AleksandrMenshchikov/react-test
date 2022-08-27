@@ -4,6 +4,7 @@ import signinReducer from './features/signinSlice';
 import modalReducer from './features/modalSlice';
 import userReducer from './features/userSlice';
 import accountReducer from './features/accountSlice';
+import peopleReducer from './features/peopleSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     signin: signinReducer,
     account: accountReducer,
+    people: peopleReducer,
   },
 });
 
