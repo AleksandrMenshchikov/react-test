@@ -35,7 +35,13 @@ const InputAvatar = () => {
 
   return (
     <>
-      <label htmlFor="file" className={styles.labelAvatar}>
+      <label
+        style={
+          !isFormEdit ? { pointerEvents: 'none' } : { pointerEvents: 'auto' }
+        }
+        htmlFor="file"
+        className={styles.labelAvatar}
+      >
         <input
           disabled={statusAccount === 'loading' || !isFormEdit}
           ref={refInputFile}
