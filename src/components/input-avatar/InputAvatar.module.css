@@ -3,8 +3,9 @@
   width: 120px;
   height: 120px;
   position: relative;
-  border-radius: 50%;
   cursor: pointer;
+  border: 1px solid rgb(196, 196, 196);
+  border-radius: 4px;
 }
 
 .editIcon {
@@ -26,7 +27,6 @@
 .avatar {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
   object-fit: contain;
 }
 
